@@ -3,7 +3,10 @@ const nextConfig = {
 	images: {
 		remotePatterns: [
 			{
-				hostname: "https://static.wixstatic.com",
+				protocol: "https",
+				hostname: "static.wixstatic.com",
+				port: "",
+				pathname: "/media/**",
 			},
 		],
 	},
