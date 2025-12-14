@@ -3,7 +3,7 @@ const nextConfig = {
 	images: {
 		remotePatterns: [
 			{
-				hostname: "**",
+				hostname: "https://static.wixstatic.com",
 			},
 		],
 	},
