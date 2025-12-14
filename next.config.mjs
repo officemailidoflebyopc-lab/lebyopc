@@ -1,14 +1,15 @@
 /** @type {import('next').NextConfig} */
-const config = {
+const nextConfig = {
 	images: {
 		remotePatterns: [
 			{
-				hostname: "*",
+				hostname: "**",
 			},
 		],
 	},
+	// Ensure typedRoutes is supported or remove if not needed
 	typedRoutes: false,
-	// used in the Dockerfile
+	// The output logic is fine, though OpenNext usually handles standalone automatically
 	output:
 		process.env.NEXT_OUTPUT === "standalone"
 			? "standalone"
@@ -17,4 +18,4 @@ const config = {
 				: undefined,
 };
 
-export default config;
+export default nextConfig;
