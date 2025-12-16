@@ -11,10 +11,14 @@ export const PaymentMethods = () => {
 		updateState: { checkoutDeliveryMethodUpdate },
 	} = useCheckoutUpdateState();
 
-	const gatewaysWithDefinedComponent = useMemo(
-		() => availablePaymentGateways.filter((gateway) => gateway.id in paymentMethodToComponent),
-		[availablePaymentGateways],
-	);
+	console.log("Available Payment Gateways:", availablePaymentGateways);
+	console.log("Payment Method To Component Mapping:", Object.keys(paymentMethodToComponent));
+
+	const gatewaysWithDefinedComponent = useMemo(() => {
+		const filtered = availablePaymentGateways.filter((gateway) => gateway.id in paymentMethodToComponent);
+		console.log("Filtered Gateways:", filtered);
+		return filtered;
+	}, [availablePaymentGateways]);
 
 	// delivery methods change total price so we want to wait until the change is done
 	if (changingBillingCountry || fetching || checkoutDeliveryMethodUpdate === "loading") {
