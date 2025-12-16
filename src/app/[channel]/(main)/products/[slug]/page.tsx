@@ -23,13 +23,24 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const [searchParams, params] = await Promise.all([props.searchParams, props.params]);
 
-	const { product } = await executeGraphQL(ProductDetailsDocument, {
-		variables: {
-			slug: decodeURIComponent(params.slug),
-			channel: params.channel,
-		},
-		revalidate: 60,
-	});
+	let product = null;
+	try {
+		const result = await executeGraphQL(ProductDetailsDocument, {
+			variables: {
+				slug: decodeURIComponent(params.slug),
+				channel: params.channel,
+			},
+			revalidate: 60,
+		});
+		product = result.product;
+	} catch (error) {
+		console.error("Failed to fetch product metadata", error);
+		// Return empty metadata or default
+		return {
+			title: "Product Not Found",
+			description: "The requested product details could not be loaded.",
+		};
+	}
 
 	if (!product) {
 		notFound();
@@ -61,11 +72,18 @@ export async function generateMetadata(
 }
 
 export async function generateStaticParams({ params }: { params: { channel: string } }) {
-	const { products } = await executeGraphQL(ProductListDocument, {
-		revalidate: 60,
-		variables: { first: 20, channel: params.channel },
-		withAuth: false,
-	});
+	let products = null;
+	try {
+		const result = await executeGraphQL(ProductListDocument, {
+			revalidate: 60,
+			variables: { first: 20, channel: params.channel },
+			withAuth: false,
+		});
+		products = result.products;
+	} catch (error) {
+		console.error("GenerateStaticParams failed", error);
+		return [];
+	}
 
 	const paths = products?.edges.map(({ node: { slug } }) => ({ slug })) || [];
 	return paths;
@@ -78,13 +96,19 @@ export default async function Page(props: {
 	searchParams: Promise<{ variant?: string }>;
 }) {
 	const [searchParams, params] = await Promise.all([props.searchParams, props.params]);
-	const { product } = await executeGraphQL(ProductDetailsDocument, {
-		variables: {
-			slug: decodeURIComponent(params.slug),
-			channel: params.channel,
-		},
-		revalidate: 60,
-	});
+	let product = null;
+	try {
+		const result = await executeGraphQL(ProductDetailsDocument, {
+			variables: {
+				slug: decodeURIComponent(params.slug),
+				channel: params.channel,
+			},
+			revalidate: 60,
+		});
+		product = result.product;
+	} catch (error) {
+		console.error("Failed to fetch product details", error);
+	}
 
 	if (!product) {
 		notFound();
