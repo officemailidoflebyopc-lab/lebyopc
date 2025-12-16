@@ -16,7 +16,10 @@ export const CODDropIn: FC<CODDropInProps> = ({ config }) => {
 		return null;
 	}
 
-	const baseAmount = parseFloat(checkout.totalPrice.gross.amount);
+	const baseAmount =
+		typeof checkout.totalPrice.gross.amount === "string"
+			? parseFloat(checkout.totalPrice.gross.amount)
+			: checkout.totalPrice.gross.amount;
 	const codFee = calculateCODFee(baseAmount);
 	const totalWithCOD = calculateTotalWithCOD(baseAmount);
 	const currency = checkout.totalPrice.gross.currency;
