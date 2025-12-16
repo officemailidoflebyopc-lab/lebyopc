@@ -12,7 +12,7 @@ interface UseCODProps {
 	config: ParsedPaymentGateway<string, any>;
 }
 
-export const useCOD = ({ config }: UseCODProps) => {
+export const useCOD = ({ config: _ }: UseCODProps) => {
 	const [loading, setLoading] = useState(false);
 	const [scriptLoaded, setScriptLoaded] = useState(false);
 	const { checkout } = useCheckout();
