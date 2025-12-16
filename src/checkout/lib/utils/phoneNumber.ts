@@ -16,8 +16,20 @@ const getPhoneNumberInstance = (phone: string, countryCode: CountryCode | undefi
 	}
 };
 
-export const isValidPhoneNumber = (phone: string, countryCode: CountryCode | undefined) =>
-	!!getPhoneNumberInstance(phone, countryCode)?.isValid();
+export const isValidPhoneNumber = (phone: string, countryCode: CountryCode | undefined) => {
+	const instance = getPhoneNumberInstance(phone, countryCode);
+	if (instance && instance.isValid()) return true;
+
+	// Fallback: Try prepending country calling code if missing? 
+	// Actually, parsePhoneNumberWithError with a countryCode argument SHOULD handle local numbers.
+	// If it failed, it might mean the number is truly invalid or "libphonenumber-js" is strict.
+	// Let's try to manual fallback for common 10-digit pattern if country is IN
+	if (countryCode === 'IN' && /^[6-9]\d{9}$/.test(phone)) {
+		return true;
+	}
+
+	return false;
+};
 
 export const usePhoneNumberValidator = (countryCode: CountryCode) => {
 	const { errorMessages } = useErrorMessages();

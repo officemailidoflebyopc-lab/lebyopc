@@ -10,6 +10,12 @@ const nextConfig = {
 				protocol: "https",
 				hostname: "pub-0d333e0e8633492abb6d0bbfcfd8a6cd.r2.dev", // Your new R2 domain
 			},
+			{
+				protocol: "http",
+				hostname: "localhost",
+				port: "8000",
+				pathname: "/thumbnail/**",
+			},
 		],
 	},
 	typedRoutes: false,

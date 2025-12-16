@@ -56,7 +56,12 @@ export default async function Page(props: {
 					<Pagination pageInfo={products.pageInfo} />
 				</div>
 			) : (
-				<h1 className="mx-auto pb-8 text-center text-xl font-semibold">Nothing found :(</h1>
+				<div className="mx-auto flex max-w-2xl flex-col items-center justify-center text-center">
+					<h1 className="pb-4 text-2xl font-bold tracking-tight text-neutral-900">No results found</h1>
+					<p className="mb-8 text-neutral-500">
+						We couldn't find any products matching &quot;{searchValue}&quot;. Try adjusting your search or browse our collections.
+					</p>
+				</div>
 			)}
 		</section>
 	);

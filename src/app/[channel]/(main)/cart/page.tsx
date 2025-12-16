@@ -18,23 +18,23 @@ export default async function Page(props: { params: Promise<{ channel: string }>
 	if (!checkout || checkout.lines.length < 1) {
 		return (
 			<section className="mx-auto max-w-7xl p-8">
-				<h1 className="mt-8 text-3xl font-bold text-neutral-900">Your Shopping Cart is empty</h1>
-				<p className="my-12 text-sm text-neutral-500">
-					Looks like you haven’t added any items to the cart yet.
-				</p>
-				<LinkWithChannel
-					href="/products"
-					className="inline-block max-w-full rounded border border-transparent bg-neutral-900 px-6 py-3 text-center font-medium text-neutral-50 hover:bg-neutral-800 aria-disabled:cursor-not-allowed aria-disabled:bg-neutral-500 sm:px-16"
-				>
-					Explore products
-				</LinkWithChannel>
+				<h1 className="mt-8 text-3xl font-bold tracking-tight text-neutral-900">Your Shopping Cart</h1>
+				<div className="mt-12 flex flex-col items-center justify-center rounded-lg border border-neutral-100 bg-neutral-50 py-16 text-center">
+					<p className="mb-6 text-lg text-neutral-600">Your cart is currently empty.</p>
+					<LinkWithChannel
+						href="/products"
+						className="inline-block rounded-full bg-neutral-900 px-8 py-3 text-sm font-medium text-white transition-colors hover:bg-neutral-800"
+					>
+						Start Shopping
+					</LinkWithChannel>
+				</div>
 			</section>
 		);
 	}
 
 	return (
 		<section className="mx-auto max-w-7xl p-8">
-			<h1 className="mt-8 text-3xl font-bold text-neutral-900">Your Shopping Cart</h1>
+			<h1 className="mt-8 text-3xl font-bold tracking-tight text-neutral-900">Your Shopping Cart</h1>
 			<form className="mt-12">
 				<ul
 					data-testid="CartProductList"

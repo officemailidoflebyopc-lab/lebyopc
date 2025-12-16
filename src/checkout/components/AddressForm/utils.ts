@@ -26,7 +26,7 @@ export const getEmptyAddressFormData = (): AddressFormData => ({
 	countryArea: "",
 	postalCode: "",
 	phone: "",
-	countryCode: "US",
+	countryCode: "IN",
 });
 
 export const getEmptyAddress = (): AddressFragment => {
@@ -44,6 +44,8 @@ export const getEmptyAddress = (): AddressFragment => {
 
 export const getAllAddressFieldKeys = () => Object.keys(getEmptyAddressFormData());
 
+import { getPhoneNumberWithCountryCode } from "@/checkout/lib/utils/phoneNumber";
+
 export const getAddressInputData = ({
 	countryCode,
 	country,
@@ -53,10 +55,16 @@ export const getAddressInputData = ({
 		countryCode?: CountryCode;
 		country: CountryDisplay;
 	}
->): AddressInput => ({
-	...pick(rest, getAllAddressFieldKeys()),
-	country: countryCode || (country?.code as CountryCode),
-});
+>): AddressInput => {
+	const rawPhone = rest.phone;
+	const selectedCountryCode = countryCode || (country?.code as CountryCode);
+
+	return {
+		...pick(rest, getAllAddressFieldKeys()),
+		country: selectedCountryCode,
+		phone: rawPhone ? getPhoneNumberWithCountryCode(rawPhone, selectedCountryCode) : "",
+	};
+};
 
 export const getAddressInputDataFromAddress = (
 	address: OptionalAddress | Partial<AddressFragment>,
@@ -79,7 +87,7 @@ export const getAddressFormDataFromAddress = (address: OptionalAddress): Address
 	if (!address) {
 		return {
 			...getEmptyAddressFormData(),
-			countryCode: "US",
+			countryCode: "IN",
 		};
 	}
 
