@@ -7,8 +7,8 @@ import { DraftModeNotification } from "@/ui/components/DraftModeNotification";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-	title: "Saleor Storefront example",
-	description: "Starter pack for building performant e-commerce experiences with Saleor.",
+	title: "Lebyopc | Premium Used PC Components",
+	description: "Your trusted source for premium used GPUs, CPUs, and PC components.",
 	metadataBase: process.env.NEXT_PUBLIC_STOREFRONT_URL
 		? new URL(process.env.NEXT_PUBLIC_STOREFRONT_URL)
 		: undefined,

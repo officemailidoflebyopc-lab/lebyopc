@@ -8,18 +8,24 @@ export const generateStaticParams = async () => {
 	// you can either hardcode the channels or use an app token to fetch the channel list here
 
 	if (process.env.SALEOR_APP_TOKEN) {
-		const channels = await executeGraphQL(ChannelsListDocument, {
-			withAuth: false, // disable cookie-based auth for this call
-			headers: {
-				// and use app token instead
-				Authorization: `Bearer ${process.env.SALEOR_APP_TOKEN}`,
-			},
-		});
-		return (
-			channels.channels
-				?.filter((channel) => channel.isActive)
-				.map((channel) => ({ channel: channel.slug })) ?? []
-		);
+		try {
+			const channels = await executeGraphQL(ChannelsListDocument, {
+				withAuth: false, // disable cookie-based auth for this call
+				headers: {
+					// and use app token instead
+					Authorization: `Bearer ${process.env.SALEOR_APP_TOKEN}`,
+				},
+			});
+			return (
+				channels.channels
+					?.filter((channel) => channel.isActive)
+					.map((channel) => ({ channel: channel.slug })) ?? []
+			);
+		} catch (e) {
+			console.error("Failed to fetch channels in generateStaticParams", e);
+			// Fallback to default channel
+			return [{ channel: DefaultChannelSlug }];
+		}
 	} else {
 		return [{ channel: DefaultChannelSlug }];
 	}
